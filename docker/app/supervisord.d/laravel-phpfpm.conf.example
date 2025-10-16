@@ -1,0 +1,12 @@
+[program:laravel-phpfpm]
+process_name=%(program_name)s_%(process_num)02d
+command=/usr/sbin/php-fpm8.3 -F
+autostart=true
+user=ubuntu
+autorestart=true
+stdout_events_enabled=true
+stderr_events_enabled=true
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+redirect_stderr=true
+exitcodes=0

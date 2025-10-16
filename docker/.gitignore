@@ -1,0 +1,6 @@
+logs/
+data/*
+.env
+.env.*
+!.env.example
+*.azure

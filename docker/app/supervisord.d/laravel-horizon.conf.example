@@ -1,0 +1,9 @@
+[program:laravel-horizon]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/artisan horizon
+autostart=true
+autorestart=true
+redirect_stderr=true
+user=ubuntu
+environment=HOME="/home/ubuntu",USER="ubuntu", PATH="/home/ubuntu/.nvm/versions/node/v14.18.1/bin:/var/www/vendor/bin:~/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+stdout_logfile=/var/www/storage/logs/laravel-horizon.log
