@@ -42,8 +42,8 @@ class AdvertisementsService
             '{{ ad_img_src }}',
             '{{ ad_title }}',
         ], [
-            url("/api/{$adName}/lead"),
-            url("/api/{$adName}/track"),
+            url("/api/advertisement/{$advertisement->id}/lead"),
+            url("/api/advertisement/{$advertisement->id}/track"),
             asset("storage/{$advertisement->image}"),
             $advertisement->title,
         ], $htmlContent);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAdvertisementRequest;
+use App\Http\Resources\AdvertisementResource;
 use App\Models\Advertisement;
 use App\Services\AdvertisementsService;
 
@@ -12,10 +13,9 @@ class AdvertisementController extends Controller
     {
     }
 
-    public function index()
+    public function dashboard()
     {
-        $advertisements = Advertisement::all();
-        return response()->json($advertisements);
+        return AdvertisementResource::collection(Advertisement::all());
     }
     
     public function store(StoreAdvertisementRequest $request) 

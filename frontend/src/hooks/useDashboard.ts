@@ -18,7 +18,12 @@ export const useDashboard = () => {
             throw new Error('Failed to fetch dashboard data');
         }
 
-        data.value = await response.json();
+        const responseParsed = await response.json();
+
+        data.value = responseParsed.data;
+
+        // sort by date descending
+        data.value.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
         
         return { success: true };
     };
