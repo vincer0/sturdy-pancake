@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from "vue"
+import { onMounted, ref } from "vue"
 import { useDashboard } from '../hooks/useDashboard';
 
 defineEmits<{
@@ -8,9 +8,21 @@ defineEmits<{
 
 const { getDashboard, loading, data } = useDashboard();
 
+const errorMessage = ref<string>('');
+
 onMounted(() => {
-    getDashboard();
+    errorMessage.value = '';
+    getDashboard().catch((error: Error) => {
+        errorMessage.value = error.message;
+    });
 });
+
+const handleRefreshTable = () => {
+    errorMessage.value = '';
+    getDashboard().catch((error: Error) => {
+        errorMessage.value = error.message;
+    });
+};
 
 </script>
 
@@ -18,11 +30,11 @@ onMounted(() => {
     <div class="dashboard">
         <h2>Dashboard</h2>
         <div class="buttons-wrapper">
-            <button @click="getDashboard" :disabled="loading">
-            {{ loading ? 'Loading...' : 'Refresh Dashboard' }}
-            </button>
+            <button @click="handleRefreshTable" :disabled="loading">Refresh Dashboard</button>
             <button @click="$emit('switchContext')">Go to Form</button>
         </div>
+        <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
+        <p class="loading" v-if="loading">Loading</p>
         <div v-if="data" class="data-table">
             <table>
                 <thead>

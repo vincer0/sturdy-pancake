@@ -9,6 +9,7 @@ defineEmits<{
 const title = ref<string>('');
 const image = ref<File | null>(null);
 const downloadLink = ref<string>('');
+const errorMessage = ref<string>('');
 
 const { createAdvertisement, loading } = useAdvertisements();
 
@@ -20,6 +21,8 @@ const handleFileInputChange = (event: Event) => {
 };
 
 const handleOnSubmit = () => {
+  errorMessage.value = '';
+  
   createAdvertisement(title.value, image.value)
     .then((response) => {
       if(response.success) {
@@ -28,7 +31,7 @@ const handleOnSubmit = () => {
         downloadLink.value = response.url;
       }
   }).catch((error) => {
-      console.error('Error creating advertisement:', error);
+      errorMessage.value = error.message || 'An error occurred while creating the advertisement.';
     });
 };
 
@@ -49,7 +52,8 @@ const handleOnSubmit = () => {
       <div>
         <span>Selected file: {{ image ? image.name : 'None Selected!' }}</span>
       </div>
-      <div v-if="loading">Uploading...</div>
+      <div class="loading" v-if="loading">Uploading...</div>
+      <div class="error-message" v-if="errorMessage">{{ errorMessage }}</div>
       <button type="submit" :disabled="loading">Submit</button>
     </form>
     <div v-if="downloadLink">

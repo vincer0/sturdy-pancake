@@ -6,26 +6,28 @@ export const useAdvertisements = () => {
     const loading = ref(false);
 
     const createAdvertisement = async (title: string, image: File) => {
-        loading.value = true;
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('image', image);
+        try {
+            loading.value = true;
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('image', image);
 
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            body: formData,
-        });
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                body: formData,
+            });
 
-        loading.value = false;
+            if (!response.ok) {
+                throw new Error('Failed to create advertisement');
+            }
 
-        if (!response.ok) {
-            throw new Error('Failed to create advertisement');
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            return { success: true, url };
+        } finally {
+            loading.value = false;
         }
-
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-
-        return { success: true, url };
     };
 
     return { createAdvertisement, loading };
